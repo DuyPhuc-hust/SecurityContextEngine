@@ -165,3 +165,19 @@ Claim the resulting validation task, then run static validation. If proof needs 
 npm run cli -- task:claim --worker validator
 npm run cli -- validate:access-control:static <validation-task-id>
 ```
+
+## SecWeave MVP vertical slice
+
+Run the reproducible demo that exercises SQLite persistence, deterministic discovery, Trivy signal normalization, explicit control/proof evidence, and promotion to a developer-ready `CONFIRMED` finding:
+
+```sh
+npm run demo:secweave
+```
+
+For a real project, add evidence explicitly and promote a hypothesis only after independent validation:
+
+```sh
+npm run cli -- evidence:add <project-id> proof-case 'cross-tenant record returned' --snapshot <snapshot-id> --revision <git-revision> --observed '{"status":200}'
+npm run cli -- finding:promote <hypothesis-id> details.json --evidence <proof-evidence-id>,<control-evidence-id>
+npm run cli -- finding:feedback <finding-id> accepted --reviewer developer --reason 'Reproduced and scheduled remediation'
+```
