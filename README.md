@@ -2,6 +2,13 @@
 
 Persistent, model-agnostic security harness. It retains context across code, runtime observations, identity, evidence, coverage, and findings so later runs analyze only the affected surface.
 
+## Specifications
+
+- [Project specification](docs/project-spec.md)
+- [SecWeave MVP alignment](docs/secweave-alignment.md)
+- [Architecture](docs/architecture.md)
+- [Runbook](docs/runbook.md)
+
 ## Structure
 
 - `skills/security-hunt/`: thin Agent Skill adapter for scoped security hunts.
