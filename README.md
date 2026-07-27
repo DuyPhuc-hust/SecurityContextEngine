@@ -143,6 +143,23 @@ npm run cli -- project:show secweave-demo
 
 Snapshot labels are also friendly: `snap-001`, `snap-002`, …; the underlying Git revision remains visible as `revision_short` when needed.
 
+## Nhúng vào agent
+
+Agent host có thể dùng API JavaScript thay vì gọi CLI trực tiếp:
+
+```js
+import { createSecurityContextAgent } from "./integrations/agent-kit.mjs";
+
+const security = createSecurityContextAgent({ dbPath: ".security-context/context.db" });
+const run = await security.initialize({ repositoryPath: "/path/to/target", projectName: "target-api" });
+await security.runDiscovery({ projectId: run.project.id, workerId: "my-agent" });
+const context = security.context({ projectId: run.project.id, snapshotId: run.snapshot.id, query: "GET /users/:id" });
+const report = security.report(run.project.id);
+security.close();
+```
+
+Agent vẫn phải dùng `evidence()` và `promote()` để tạo finding; discovery không tự động biến thành finding xác nhận. `integrations/mcp-boundary.mjs` cung cấp lớp tool transport-neutral cho MCP host.
+
 Schedule only change impact after a later Git commit:
 
 ```sh
