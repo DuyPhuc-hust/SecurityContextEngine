@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence",
+  "type": "object",
+  "required": ["id", "kind", "artifact_uri", "source_revision", "redacted"],
+  "properties": {
+    "id": {"type": "string"},
+    "kind": {"enum": ["source", "request-response", "log", "trace", "screenshot", "test", "tool-output"]},
+    "artifact_uri": {"type": "string"},
+    "source_revision": {"type": "string"},
+    "redacted": {"type": "boolean"}
+  }
+}

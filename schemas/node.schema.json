@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Context Node",
+  "type": "object",
+  "required": ["id", "kind", "label", "provenance"],
+  "properties": {"id": {"type": "string"}, "kind": {"type": "string"}, "label": {"type": "string"}, "attributes": {"type": "object"}, "provenance": {"$ref": "./provenance.schema.json"}}
+}

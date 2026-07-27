@@ -1,0 +1,18 @@
+version: 1
+target_mode: whitebox
+primary_targets: []
+related_targets:
+  discovery: passive-only
+  active_testing: false
+cross_domain:
+  record_relationships: true
+  follow_redirects: same-scope-only
+approvals:
+  active_testing: required
+  destructive_operations: prohibited
+runtime:
+  allowed_methods: [GET, HEAD, OPTIONS]
+  allow_non_destructive_write_methods: false
+data_handling:
+  redact_secrets: true
+  redact_pii: true

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fact",
+  "type": "object",
+  "required": ["id", "summary", "provenance"],
+  "properties": {
+    "id": {"type": "string"},
+    "summary": {"type": "string"},
+    "provenance": {"$ref": "./provenance.schema.json"}
+  }
+}

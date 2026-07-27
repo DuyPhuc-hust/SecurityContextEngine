@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Hunt"
+  short_description: "Run scoped, evidence-first security hunts"
+  default_prompt: "Use $security-hunt to perform a scoped, evidence-first security review."

@@ -1,0 +1,9 @@
+{
+  "name": "security-context-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Persistent, evidence-first security testing harness",
+  "type": "module",
+  "scripts": {"benchmark": "node scripts/run-benchmark.mjs", "cli": "node cli/security-context.mjs", "check": "tsc --noEmit", "test": "node --test tests/**/*.test.mjs", "validate:schemas": "node scripts/validate-schemas.mjs"},
+  "devDependencies": {"typescript": "^5.7.3"}
+}

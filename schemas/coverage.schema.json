@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Coverage",
+  "type": "object",
+  "required": ["area", "attack_class", "depth", "source_revision", "stale"],
+  "properties": {
+    "area": {"type": "string"},
+    "attack_class": {"type": "string"},
+    "depth": {"enum": ["none", "partial", "standard", "deep"]},
+    "source_revision": {"type": "string"},
+    "stale": {"type": "boolean"}
+  }
+}

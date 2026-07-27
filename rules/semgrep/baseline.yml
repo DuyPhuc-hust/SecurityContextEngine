@@ -1,0 +1,17 @@
+rules:
+  - id: javascript-eval
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Dynamic code execution through eval can enable code injection.
+    pattern: eval(...)
+    metadata:
+      category: security
+      attack_class: injection
+  - id: javascript-child-process-shell
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: shell execution requires strict control of all command input.
+    pattern: child_process.exec(...)
+    metadata:
+      category: security
+      attack_class: injection

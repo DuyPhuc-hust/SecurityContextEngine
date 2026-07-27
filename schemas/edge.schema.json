@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Context Edge",
+  "type": "object",
+  "required": ["id", "from", "to", "kind", "provenance"],
+  "properties": {"id": {"type": "string"}, "from": {"type": "string"}, "to": {"type": "string"}, "kind": {"type": "string"}, "provenance": {"$ref": "./provenance.schema.json"}}
+}

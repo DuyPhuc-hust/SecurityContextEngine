@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "check_id": "example.injection",
+      "path": "src/query.ts",
+      "start": {"line": 12, "col": 3},
+      "end": {"line": 12, "col": 40},
+      "extra": {"severity": "WARNING", "message": "Example signal only", "metadata": {"category": "security"}}
+    }
+  ],
+  "errors": []
+}

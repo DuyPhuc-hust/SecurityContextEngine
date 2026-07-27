@@ -1,0 +1,10 @@
+node_modules/
+.tools/
+dist/
+.env
+.security-context/
+artifacts/
+reports/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

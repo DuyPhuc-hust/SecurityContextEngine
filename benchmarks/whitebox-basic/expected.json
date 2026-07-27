@@ -1,0 +1,10 @@
+{
+  "name": "whitebox-basic",
+  "expected_hypothesis_attack_classes": [
+    "broken-access-control",
+    "authentication",
+    "injection"
+  ],
+  "minimum_partial_coverage": 3,
+  "expected_confirmed_findings": 0
+}

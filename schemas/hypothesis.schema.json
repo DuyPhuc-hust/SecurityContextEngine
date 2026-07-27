@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hypothesis",
+  "type": "object",
+  "required": ["id", "attack_class", "security_invariant", "rank", "evidence_ids", "state"],
+  "properties": {
+    "id": {"type": "string"},
+    "attack_class": {"type": "string"},
+    "security_invariant": {"type": "string"},
+    "rank": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "state": {"const": "HYPOTHESIS"}
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SBOM",
+  "type": "object",
+  "required": ["bomFormat", "components"],
+  "properties": {"bomFormat": {"const": "CycloneDX"}, "components": {"type": "array"}, "dependencies": {"type": "array"}, "vulnerabilities": {"type": "array"}}
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Threat Model",
+  "type": "object",
+  "required": ["system_purpose", "assets", "entry_points", "trust_boundaries", "invariants"],
+  "properties": {
+    "system_purpose": {"type": "string"},
+    "assets": {"type": "array", "items": {"type": "string"}},
+    "entry_points": {"type": "array", "items": {"type": "string"}},
+    "trust_boundaries": {"type": "array", "items": {"type": "string"}},
+    "invariants": {"type": "array", "items": {"type": "string"}},
+    "untrusted_inputs": {"type": "array", "items": {"type": "string"}},
+    "attacker_identities": {"type": "array", "items": {"type": "string"}},
+    "authentication_assumptions": {"type": "array", "items": {"type": "string"}},
+    "authorization_model": {"type": "string"},
+    "sensitive_operations": {"type": "array", "items": {"type": "string"}},
+    "sensitive_data_paths": {"type": "array", "items": {"type": "string"}},
+    "deployment_assumptions": {"type": "array", "items": {"type": "string"}},
+    "priority_areas": {"type": "array", "items": {"type": "string"}},
+    "exclusions": {"type": "array", "items": {"type": "string"}}
+  }
+}

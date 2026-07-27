@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [{
+    "tool": {"driver": {"name": "example-sast", "rules": [{"id": "example.sql-injection", "defaultConfiguration": {"level": "error"}}]}},
+    "results": [{
+      "ruleId": "example.sql-injection",
+      "level": "error",
+      "message": {"text": "Example SARIF signal only"},
+      "locations": [{"physicalLocation": {"artifactLocation": {"uri": "src/db.ts"}, "region": {"startLine": 8, "startColumn": 3}}}]
+    }]
+  }]
+}

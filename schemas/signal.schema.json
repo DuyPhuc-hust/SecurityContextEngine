@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signal",
+  "type": "object",
+  "required": ["id", "tool", "rule_id", "message", "location", "artifact_id"],
+  "properties": {
+    "id": {"type": "string"},
+    "tool": {"type": "string"},
+    "rule_id": {"type": "string"},
+    "severity": {"type": ["string", "null"]},
+    "message": {"type": "string"},
+    "location": {"type": "object"},
+    "artifact_id": {"type": "string"}
+  }
+}

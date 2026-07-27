@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Finding",
+  "type": "object",
+  "required": ["id", "state", "target_revision", "security_invariant", "evidence_ids"],
+  "properties": {
+    "id": {"type": "string"},
+    "state": {"enum": ["SIGNAL", "HYPOTHESIS", "UNDER_REVIEW", "VALIDATION_PLANNED", "VALIDATION_BLOCKED", "REJECTED", "PARTIALLY_VALIDATED", "CONFIRMED", "ACCEPTED", "RISK_ACCEPTED", "PATCH_PROPOSED", "FIX_VERIFIED", "CLOSED", "REOPENED"]},
+    "target_revision": {"type": "string"},
+    "security_invariant": {"type": "string"},
+    "control_case": {"type": "string"},
+    "proof_case": {"type": "string"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "attacker_identity": {"type": "string"},
+    "preconditions": {"type": "string"},
+    "entry_point": {"type": "string"},
+    "attack_path": {"type": "string"},
+    "observed_result": {"type": "string"},
+    "impact": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "root_cause": {"type": "string"},
+    "remediation": {"type": "string"},
+    "fix_verification": {"type": "string"},
+    "feedback": {"type": "array", "items": {"type": "object"}}
+  }
+}

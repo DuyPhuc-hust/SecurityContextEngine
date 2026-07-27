@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task",
+  "type": "object",
+  "required": ["id", "kind", "state", "scope", "created_at"],
+  "properties": {
+    "id": {"type": "string"},
+    "kind": {"type": "string"},
+    "state": {"enum": ["queued", "running", "blocked", "completed", "failed"]},
+    "scope": {"type": "object"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}
