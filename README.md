@@ -133,6 +133,14 @@ npm run cli -- report:status <project-id>
 npm run cli -- report:markdown <project-id>
 ```
 
+Project and snapshot references can use a project name, an 8-character short ID, or a snapshot revision prefix:
+
+```sh
+npm run cli -- projects:list
+npm run cli -- snapshots:list secweave-demo
+npm run cli -- project:show secweave-demo
+```
+
 Schedule only change impact after a later Git commit:
 
 ```sh

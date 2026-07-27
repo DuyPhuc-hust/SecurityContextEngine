@@ -29,7 +29,9 @@ const usage = `Security Context Engine CLI
 Usage:
   security-context project:create <name> [--db <path>]
   security-context projects:list [--db <path>]
-  security-context snapshot:create <project-id> <revision> [--db <path>]
+  security-context project:show <project-name-or-id> [--db <path>]
+  security-context snapshots:list <project-name-or-id> [--db <path>]
+  security-context snapshot:create <project-name-or-id> <revision> [--db <path>]
   security-context task:create <project-id> <kind> [--snapshot <id>] [--scope <json>] [--priority <number>] [--db <path>]
   security-context tasks:list [--project <id>] [--db <path>]
   security-context task:state <task-id> <queued|running|blocked|completed|failed> [--db <path>]
@@ -96,7 +98,9 @@ try {
   switch (command) {
     case "project:create": result = store.createProject(args.join(" ")); break;
     case "projects:list": result = store.listProjects(); break;
-    case "snapshot:create": result = store.createSnapshot(args[0], args[1]); break;
+    case "project:show": result = store.resolveProject(args[0]); break;
+    case "snapshots:list": result = store.listSnapshots(args[0]); break;
+    case "snapshot:create": result = store.createSnapshot(store.resolveProject(args[0]).id, args[1]); break;
     case "task:create": result = store.createTask({ projectId: args[0], kind: args[1], snapshotId: option("--snapshot", null), scope: json(option("--scope", "{}"), "scope"), priority: Number(option("--priority", "0")) }); break;
     case "tasks:list": result = store.listTasks(option("--project", null)); break;
     case "task:state": store.updateTaskState(args[0], args[1]); result = { id: args[0], state: args[1] }; break;

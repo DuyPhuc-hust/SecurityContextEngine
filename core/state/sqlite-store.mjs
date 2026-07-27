@@ -137,7 +137,17 @@ export class SqliteStore {
   getProjectByName(name) { return this.db.prepare("SELECT * FROM projects WHERE name = ?").get(name) ?? null; }
   findOrCreateProject(name) { return this.getProjectByName(name) ?? this.createProject(name); }
   getProject(projectId) { return this.db.prepare("SELECT * FROM projects WHERE id = ?").get(projectId) ?? null; }
-  listProjects() { return this.db.prepare("SELECT * FROM projects ORDER BY created_at DESC").all(); }
+  listProjects() { return this.db.prepare("SELECT * FROM projects ORDER BY created_at DESC").all().map((project) => ({ ...project, short_id: project.id.slice(0, 8) })); }
+  resolveProject(projectRef) {
+    if (!projectRef) throw new Error("Project name or id is required");
+    const exact = this.getProject(projectRef);
+    if (exact) return exact;
+    const byShortId = this.db.prepare("SELECT * FROM projects WHERE id LIKE ?").all(`${projectRef}%`);
+    if (byShortId.length === 1) return byShortId[0];
+    const byName = this.getProjectByName(projectRef);
+    if (byName) return byName;
+    throw new Error(`Project not found: ${projectRef}`);
+  }
 
   createSnapshot(projectId, revision) {
     const existing = this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? AND revision = ?").get(projectId, revision);
@@ -152,6 +162,19 @@ export class SqliteStore {
   getSnapshot(snapshotId) { return this.db.prepare("SELECT * FROM snapshots WHERE id = ?").get(snapshotId) ?? null; }
 
   latestSnapshot(projectId) { return this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at DESC LIMIT 1").get(projectId) ?? null; }
+  listSnapshots(projectRef) {
+    const project = this.resolveProject(projectRef);
+    return this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at DESC").all(project.id).map((snapshot) => ({ ...snapshot, short_id: snapshot.id.slice(0, 8), label: snapshot.revision.slice(0, 12) }));
+  }
+  resolveSnapshot(projectRef, snapshotRef) {
+    const project = this.resolveProject(projectRef);
+    if (!snapshotRef) return this.latestSnapshot(project.id);
+    const exact = this.getSnapshot(snapshotRef);
+    if (exact && exact.project_id === project.id) return exact;
+    const matches = this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? AND (revision = ? OR revision LIKE ? OR id LIKE ?)").all(project.id, snapshotRef, `${snapshotRef}%`, `${snapshotRef}%`);
+    if (matches.length === 1) return matches[0];
+    throw new Error(`Snapshot not found: ${snapshotRef}`);
+  }
 
   createTask({ projectId, snapshotId = null, kind, scope = {}, priority = 0 }) {
     if (!kind?.trim()) throw new Error("Task kind is required");
