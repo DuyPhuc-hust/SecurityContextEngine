@@ -6,6 +6,7 @@ import { canTransition, findingStates } from "../findings/state-machine.mjs";
 
 const now = () => new Date().toISOString();
 const id = () => randomUUID();
+const slug = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const taskStates = new Set(["queued", "running", "blocked", "completed", "failed"]);
 
 export class SqliteStore {
@@ -137,7 +138,7 @@ export class SqliteStore {
   getProjectByName(name) { return this.db.prepare("SELECT * FROM projects WHERE name = ?").get(name) ?? null; }
   findOrCreateProject(name) { return this.getProjectByName(name) ?? this.createProject(name); }
   getProject(projectId) { return this.db.prepare("SELECT * FROM projects WHERE id = ?").get(projectId) ?? null; }
-  listProjects() { return this.db.prepare("SELECT * FROM projects ORDER BY created_at DESC").all().map((project) => ({ ...project, short_id: project.id.slice(0, 8) })); }
+  listProjects() { return this.db.prepare("SELECT * FROM projects ORDER BY created_at DESC").all().map((project) => ({ ...project, slug: slug(project.name), short_id: project.id.slice(0, 8) })); }
   resolveProject(projectRef) {
     if (!projectRef) throw new Error("Project name or id is required");
     const exact = this.getProject(projectRef);
@@ -146,6 +147,8 @@ export class SqliteStore {
     if (byShortId.length === 1) return byShortId[0];
     const byName = this.getProjectByName(projectRef);
     if (byName) return byName;
+    const bySlug = this.db.prepare("SELECT * FROM projects WHERE lower(replace(replace(name, ' ', '-'), '_', '-')) = ?").get(projectRef.toLowerCase());
+    if (bySlug) return bySlug;
     throw new Error(`Project not found: ${projectRef}`);
   }
 
@@ -164,7 +167,7 @@ export class SqliteStore {
   latestSnapshot(projectId) { return this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at DESC LIMIT 1").get(projectId) ?? null; }
   listSnapshots(projectRef) {
     const project = this.resolveProject(projectRef);
-    return this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at DESC").all(project.id).map((snapshot) => ({ ...snapshot, short_id: snapshot.id.slice(0, 8), label: snapshot.revision.slice(0, 12) }));
+    return this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at").all(project.id).map((snapshot, index) => ({ ...snapshot, label: `snap-${String(index + 1).padStart(3, "0")}`, short_id: snapshot.id.slice(0, 8), revision_short: snapshot.revision.slice(0, 12) }));
   }
   resolveSnapshot(projectRef, snapshotRef) {
     const project = this.resolveProject(projectRef);
@@ -172,6 +175,11 @@ export class SqliteStore {
     const exact = this.getSnapshot(snapshotRef);
     if (exact && exact.project_id === project.id) return exact;
     const matches = this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? AND (revision = ? OR revision LIKE ? OR id LIKE ?)").all(project.id, snapshotRef, `${snapshotRef}%`, `${snapshotRef}%`);
+    if (!matches.length && /^snap-\d{3}$/.test(snapshotRef)) {
+      const index = Number(snapshotRef.slice(5));
+      const ordered = this.db.prepare("SELECT * FROM snapshots WHERE project_id = ? ORDER BY created_at").all(project.id);
+      if (ordered[index - 1]) return ordered[index - 1];
+    }
     if (matches.length === 1) return matches[0];
     throw new Error(`Snapshot not found: ${snapshotRef}`);
   }

@@ -141,6 +141,8 @@ npm run cli -- snapshots:list secweave-demo
 npm run cli -- project:show secweave-demo
 ```
 
+Snapshot labels are also friendly: `snap-001`, `snap-002`, …; the underlying Git revision remains visible as `revision_short` when needed.
+
 Schedule only change impact after a later Git commit:
 
 ```sh
